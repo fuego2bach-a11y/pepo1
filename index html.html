@@ -115,7 +115,100 @@
   </a>
 </div>
     </section>
+<section style="text-align:center; margin:40px 0;">
+  <h2>🎮 Mini Juego Pong</h2>
+  <p>Usa W / S y ↑ / ↓ para jugar</p>
 
+  <canvas id="pong" width="600" height="400" style="border:2px solid #000;"></canvas>
+</section>
+
+<script>
+  const canvas = document.getElementById("pong");
+  const ctx = canvas.getContext("2d");
+
+  // Paletas
+  const paddleWidth = 10;
+  const paddleHeight = 80;
+
+  let leftPaddleY = canvas.height / 2 - paddleHeight / 2;
+  let rightPaddleY = canvas.height / 2 - paddleHeight / 2;
+
+  // Bola
+  let ballX = canvas.width / 2;
+  let ballY = canvas.height / 2;
+  let ballRadius = 8;
+  let ballSpeedX = 4;
+  let ballSpeedY = 4;
+
+  // Controles
+  const keys = {};
+
+  document.addEventListener("keydown", e => keys[e.key] = true);
+  document.addEventListener("keyup", e => keys[e.key] = false);
+
+  function movePaddles() {
+    if (keys["w"] && leftPaddleY > 0) leftPaddleY -= 6;
+    if (keys["s"] && leftPaddleY < canvas.height - paddleHeight) leftPaddleY += 6;
+    if (keys["ArrowUp"] && rightPaddleY > 0) rightPaddleY -= 6;
+    if (keys["ArrowDown"] && rightPaddleY < canvas.height - paddleHeight) rightPaddleY += 6;
+  }
+
+  function moveBall() {
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+
+    // Rebote arriba y abajo
+    if (ballY <= 0 || ballY >= canvas.height) {
+      ballSpeedY *= -1;
+    }
+
+    // Colisión paleta izquierda
+    if (
+      ballX - ballRadius < paddleWidth &&
+      ballY > leftPaddleY &&
+      ballY < leftPaddleY + paddleHeight
+    ) {
+      ballSpeedX *= -1;
+    }
+
+    // Colisión paleta derecha
+    if (
+      ballX + ballRadius > canvas.width - paddleWidth &&
+      ballY > rightPaddleY &&
+      ballY < rightPaddleY + paddleHeight
+    ) {
+      ballSpeedX *= -1;
+    }
+
+    // Reinicio si sale
+    if (ballX < 0 || ballX > canvas.width) {
+      ballX = canvas.width / 2;
+      ballY = canvas.height / 2;
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Paletas
+    ctx.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
+    ctx.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
+
+    // Bola
+    ctx.beginPath();
+    ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function gameLoop() {
+    movePaddles();
+    moveBall();
+    draw();
+    requestAnimationFrame(gameLoop);
+  }
+
+  gameLoop();
+</script>
     <section id="contacto">
         <h2>Contacto</h2>
         <p>Puedes visitar la web oficial de la tienda para más información: <strong>pollitosxompraventa.es</strong></p>
@@ -127,6 +220,7 @@
 
 </body>
 </html>
+
 
 
 
