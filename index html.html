@@ -115,11 +115,22 @@
   </a>
 </div>
     </section>
-<section style="text-align:center; margin:40px 0;">
+<section style="
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 40px 0;
+">
   <h2>🎮 Mini Juego Pong</h2>
   <p>Usa W / S y ↑ / ↓ para jugar</p>
 
-  <canvas id="pong" width="600" height="400" style="border:2px solid #000;"></canvas>
+  <canvas 
+    id="pong" 
+    width="600" 
+    height="400"
+    style="border:2px solid #000; display:block;"
+  ></canvas>
 </section>
 
 <script>
@@ -157,12 +168,10 @@
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
-    // Rebote arriba y abajo
     if (ballY <= 0 || ballY >= canvas.height) {
       ballSpeedY *= -1;
     }
 
-    // Colisión paleta izquierda
     if (
       ballX - ballRadius < paddleWidth &&
       ballY > leftPaddleY &&
@@ -171,7 +180,6 @@
       ballSpeedX *= -1;
     }
 
-    // Colisión paleta derecha
     if (
       ballX + ballRadius > canvas.width - paddleWidth &&
       ballY > rightPaddleY &&
@@ -180,7 +188,6 @@
       ballSpeedX *= -1;
     }
 
-    // Reinicio si sale
     if (ballX < 0 || ballX > canvas.width) {
       ballX = canvas.width / 2;
       ballY = canvas.height / 2;
@@ -190,11 +197,9 @@
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Paletas
     ctx.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
     ctx.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
 
-    // Bola
     ctx.beginPath();
     ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
     ctx.fill();
@@ -209,6 +214,7 @@
 
   gameLoop();
 </script>
+
     <section id="contacto">
         <h2>Contacto</h2>
         <p>Puedes visitar la web oficial de la tienda para más información: <strong>pollitosxompraventa.es</strong></p>
@@ -220,6 +226,7 @@
 
 </body>
 </html>
+
 
 
 
